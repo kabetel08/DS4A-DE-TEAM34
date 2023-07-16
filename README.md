@@ -30,6 +30,3 @@ additional information that you believe would be valuable to the development of 
 - General Payment Data for 2020 and 2021
 - Doctor’s reviews from the Vitals website
 
-**Data model**
-
-**ETL Pipeline**
