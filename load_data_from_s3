@@ -1,0 +1,57 @@
+Load S3 data into Redshift
+======================================================
+COPY data_swan.payment_dim
+FROM 's3://dataswan/Processed_Payments/Payment_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;
+
+COPY data_swan.location_dim
+FROM 's3://dataswan/Processed_Payments/Location_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;
+
+COPY data_swan.program_dim
+FROM 's3://dataswan/Processed_Payments/Program_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;
+
+COPY data_swan.payment_fact
+FROM 's3://dataswan/Processed_Payments/Payment_Fact.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;
+
+COPY data_swan.doctor_dim
+FROM 's3://dataswan/Processed_Payments/Doctor_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;
+
+COPY data_swan.reviews_dim
+FROM 's3://dataswan/Processed_Reviews/Review_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;
+
+COPY data_swan.reviews_fact
+FROM 's3://dataswan/Processed_Reviews/Review_Fact.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV
+IGNOREHEADER 1;

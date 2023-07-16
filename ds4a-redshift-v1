@@ -1,0 +1,137 @@
+-- under dev schema, just in case one already exists
+-- DROP SCHEMA data_swan; --if schema doesn't exist, this should return an error, move on
+
+CREATE SCHEMA data_swan;
+
+-- drop any previous table instances if you've already created the schema before
+DROP TABLE IF EXISTS dev.data_swan.payment_dim;
+DROP TABLE IF EXISTS dev.data_swan.location_dim;
+DROP TABLE IF EXISTS dev.data_swan.program_dim;
+DROP TABLE IF EXISTS dev.data_swan.payment_fact;
+DROP TABLE IF EXISTS dev.data_swan.doctor_dim;
+
+DROP TABLE IF EXISTS dev.data_swan.reviews_fact;
+DROP TABLE IF EXISTS dev.data_swan.reviews_dim;
+
+-- create table we want to load data to
+CREATE TABLE data_swan.payment_dim (
+covered_recipient_npi varchar(500),
+payment_id varchar(500),
+date_of_payment varchar(500),
+form_of_payment varchar(500)
+); 
+
+CREATE TABLE data_swan.location_dim (
+covered_recipient_npi varchar(500),
+recipient_city varchar(500) ,
+recipient_state varchar(500),
+recipient_country varchar(500),
+recipient_zipcode varchar(500)
+); 
+
+CREATE TABLE data_swan.program_dim (
+covered_recipient_npi varchar(500),
+indicate_drug_or_biological_or_device_or_medical_supply varchar(500),
+product_category_or_therapeutic_area varchar(500),
+program_year varchar(500)
+); 
+
+CREATE TABLE data_swan.payment_fact (
+covered_recipient_npi varchar(500),
+payment_id varchar(500),
+total_amount_of_payment_usdollars varchar(500),
+number_of_payments_included varchar(500)
+); 
+
+
+CREATE TABLE data_swan.doctor_dim (
+covered_recipient_npi varchar(500),
+covered_recipient_first_name varchar(500),
+covered_recipient_middle_name varchar(500),
+covered_recipient_last_name varchar(500),
+covered_recipient_type varchar(500),
+teaching_hospital_name varchar(500),
+covered_recipient_primary_type varchar(500),
+covered_recipient_specialty varchar(500)
+); 
+
+CREATE TABLE data_swan.reviews_fact (
+covered_recipient_npi varchar(500),
+reviewid varchar(500),
+rating_value varchar(500)
+); 
+
+
+CREATE TABLE data_swan.reviews_dim (
+covered_recipient_npi varchar(500),
+reviewid varchar(500),
+doctor varchar(500),
+date varchar(500),
+source varchar(500)
+);
+
+
+======================================================
+COPY data_swan.payment_dim
+FROM 's3://dataswan/Processed_Payments/Payment_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+
+COPY data_swan.location_dim
+FROM 's3://dataswan/Processed_Payments/Location_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+
+COPY data_swan.program_dim
+FROM 's3://dataswan/Processed_Payments/Program_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+
+COPY data_swan.payment_fact
+FROM 's3://dataswan/Processed_Payments/Payment_Fact.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+
+COPY data_swan.doctor_dim
+FROM 's3://dataswan/Processed_Payments/Doctor_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+
+COPY data_swan.reviews_dim
+FROM 's3://dataswan/Processed_Reviews/Review_Dim.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+
+COPY data_swan.reviews_fact
+FROM 's3://dataswan/Processed_Reviews/Review_Fact.csv/'
+REGION 'us-east-2'
+IAM_ROLE 'arn:aws:iam::162055620234:role/AmazonRedshiftRole'
+DELIMITER ','
+CSV;
+==============================================================
+-- check we some data for each table in the format that we expected it 
+select * from data_swan.doctor_dim limit 5; 
+
+select * from data_swan.location_dim limit 5; 
+
+select * from data_swan.payment_dim limit 5; 
+
+select * from data_swan.payment_fact limit 5;
+
+select * from data_swan.program_dim limit 5; 
+
+select * from data_swan.reviews_dim limit 5; 
+
+select * from data_swan.reviews_fact limit 5; 

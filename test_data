@@ -1,0 +1,15 @@
+
+-- check we some data for each table in the format that we expected it 
+select * from data_swan.doctor_dim limit 5; 
+
+select * from data_swan.location_dim limit 5; 
+
+select * from data_swan.payment_dim limit 5; 
+
+select * from data_swan.payment_fact limit 5;
+
+select * from data_swan.program_dim limit 5; 
+
+select * from data_swan.reviews_dim limit 5; 
+
+select * from data_swan.reviews_fact limit 5; 
